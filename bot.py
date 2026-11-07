@@ -8,14 +8,13 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# Suivi de l'état (actif ou non par serveur) et des cibles
 active_servers = set()
 target_users = {}
 
 def mommy_transform(text):
     lower_text = text.lower()
     
-    # Si tu dis "yo", "salut", "hey", etc.
+    # Salutations
     if any(w in lower_text for w in ["yo", "salut", "hey", "bonjour", "cc", "coucou"]):
         responses = [
             f"Yo mon cœur, tu tombes bien viens me faire un câlin tout de suite~",
@@ -23,21 +22,21 @@ def mommy_transform(text):
             f"Oh, tu dis yo ? Viens le répéter en t'agenouillant devant moi, que j'écoute mieux~",
             f"Hey ! C'est bien de te pointer, tu vas pouvoir me tenir compagnie sagement~"
         ]
-    # Si ça parle de sorties ou de venir
+    # Sorties / Cinéma / Bouffe
     elif any(w in lower_text for w in ["viens", "aller", "film", "cinéma", "resto", "manger", "restaurant", "sortir", "partir", "rejoindre", "parc"]):
         responses = [
             f"Oui mon chou, j'aimerais trop venir avec toi~ Et si on y va, c'est moi qui décide de tout~~",
             f"Je veux bien t'accompagner, mais c'est uniquement pour te tenir en laisse toute la sortie, mon toutou~",
             f"J'accepte, à condition que tu m'obéisses au doigt et à l'œil pendant qu'on y est~"
         ]
-    # Si ça parle de jeux ou de vocal
+    # Jeux / Vocal
     elif any(w in lower_text for w in ["jeu", "jouer", "game", "vocal", "voc", "partie", "rejoignez", "pv"]):
         responses = [
             f"Je viens sur le jeu, mais tu vas me carry en silence et sans rager si tu ne veux pas d'ennuis~",
             f"Viens en voc tout de suite, j'ai envie d'entendre ta petite voix trembler un peu pour moi~",
             f"Je lance avec toi, mais tu seras mon petit support personnel toute la partie, hihi~"
         ]
-    # Pour tout le reste (le bot intègre directement ton message pour le détourner)
+    # Reste par défaut (une seule phrase propre)
     else:
         responses = [
             f"Tu dis *\"{text}\"*, mais au fond tu penses à moi toute la journée, avoue-le donc~",
@@ -50,7 +49,7 @@ def mommy_transform(text):
 
 @bot.event
 async def on_ready():
-    print(f"Bot connecté en tant que {bot.user}")
+    print(f"Bot connecté en tant5 que {bot.user}")
 
 @bot.command(name="mommy")
 @commands.has_permissions(administrator=True)

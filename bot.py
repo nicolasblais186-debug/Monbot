@@ -80,4 +80,4 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-bot.run("MTU2ODM3NjYxNDMwNjE5MzQxOA.G67lrl.D7DTUDwfZZDThOh8X-nLnhrwQEP-8fdWXANGcI")
+bot.run("TON_TOKEN_DE_BOT_DISCORD")

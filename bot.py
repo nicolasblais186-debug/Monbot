@@ -13,11 +13,11 @@ active_servers = set()
 target_users = {}
 
 def mommy_transform(text):
-    # Un grand choix de phrases selon le type de situation pour que ça reste cohérent et ultra taquin
     lower_text = text.lower()
     
-    # Si ça parle de sortie, de films, de bouffe ou de venir quelque part
-    if any(word in lower_text for in ["viens", "aller", "film", "cinéma", "manger", "restaurant", "sortir", "partir"]):
+    # Correction de la syntaxe Python ici (in word)
+    keywords = ["viens", "aller", "film", "cinéma", "manger", "restaurant", "sortir", "partir"]
+    if any(word in lower_text for word in keywords):
         prefixes = [
             f"Mh, tu proposes *\"{text}\"* ? Oh, ",
             f"Tu dis *\"{text}\"* ? Disons plutôt que ",
@@ -30,7 +30,6 @@ def mommy_transform(text):
             f"je viens, mais c'est uniquement pour te surveiller de très près, petit agneau~",
             f"j'accepte ton invitation, à condition que tu m'obéisses pour tout le reste de la soirée~"
         ]
-    # Si c'est une question ou une affirmation générale
     else:
         prefixes = [
             f"Tu l'ouvres en disant *\"{text}\"*... Mais en vrai, ",
@@ -70,7 +69,6 @@ async def toggle_mommy(ctx):
 @commands.has_permissions(administrator=True)
 async def set_target(ctx, member: discord.Member):
     target_users[ctx.guild.id] = member.id
-    # S'assure que le mode est actif si on cible quelqu'un
     active_servers.add(ctx.guild.id)
     await ctx.send(f"Cible verrouillée : {member.mention} va désormais se faire piéger à chacun de ses messages. 👑")
 
@@ -86,7 +84,6 @@ async def on_message(message):
             await bot.process_commands(message)
             return
 
-        # Si une cible spécifique a été définie, on ne piège QUE cette personne. Sinon, on piège tout le monde !
         should_transform = False
         if guild_id in target_users:
             if message.author.id == target_users[guild_id]:

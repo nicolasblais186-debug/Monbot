@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.ext import commands
 import random
@@ -80,4 +81,5 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-bot.run("TON_TOKEN_DE_BOT_DISCORD")
+token = os.getenv("DISCORD_TOKEN")
+bot.run(token)

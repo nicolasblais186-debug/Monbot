@@ -2,7 +2,24 @@ import os
 import discord
 from discord.ext import commands
 import random
+from flask import Flask
+from threading import Thread
 
+# 1. Petit serveur web Flask pour garder Render heureux
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Je suis en ligne 24h/24 !"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
+
+# 2. Configuration du bot Discord
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -36,7 +53,7 @@ def mommy_transform(text):
             f"Viens en voc tout de suite, j'ai envie d'entendre ta petite voix trembler un peu pour moi~",
             f"Je lance avec toi, mais tu seras mon petit support personnel toute la partie, hihi~"
         ]
-    # Reste par défaut (une seule phrase propre)
+    # Reste par défaut
     else:
         responses = [
             f"Tu dis *\"{text}\"*, mais au fond tu penses à moi toute la journée, avoue-le donc~",
@@ -49,7 +66,7 @@ def mommy_transform(text):
 
 @bot.event
 async def on_ready():
-    print(f"Bot connecté en tant5 que {bot.user}")
+    print(f"Bot connecté en tant que {bot.user}")
 
 @bot.command(name="mommy")
 @commands.has_permissions(administrator=True)
@@ -109,5 +126,8 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-token = os.getenv("DISCORD_TOKEN")
-bot.run(token)
+# Lancement du serveur web de secours + du bot Discord
+if __name__ == "__main__":
+    keep_alive()
+    token = os.getenv("DISCORD_TOKEN")
+    bot.run(token)

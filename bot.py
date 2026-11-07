@@ -15,39 +15,46 @@ target_users = {}
 def mommy_transform(text):
     lower_text = text.lower()
     
-    # Correction de la syntaxe Python ici (in word)
-    keywords = ["viens", "aller", "film", "cinéma", "manger", "restaurant", "sortir", "partir"]
-    if any(word in lower_text for word in keywords):
-        prefixes = [
-            f"Mh, tu proposes *\"{text}\"* ? Oh, ",
-            f"Tu dis *\"{text}\"* ? Disons plutôt que ",
-            f"Tu as osé dire *\"{text}\"* ? Très bien, alors ",
-            f"En disant *\"{text}\"*, tu t'imagines quoi ? "
+    # 1. Si ça parle de sorties, de films, de bouffe ou de venir
+    if any(word in lower_text for word in ["viens", "aller", "film", "cinéma", "manger", "restaurant", "sortir", "partir", "rejoindre"]):
+        phrases = [
+            f"Oui mon chou, j'aimerais trop venir avec toi~ Et si c'est un film d'horreur, je te laisserai peut-être même te coller à moi par peur~~",
+            f"Je veux bien t'accompagner, mais c'est uniquement pour te tenir en laisse toute la soirée, petit agneau~",
+            f"J'accepte ton invitation, à condition que tu m'obéisses au doigt et à l'œil pendant qu'on y est~",
+            f"Compte sur moi pour venir, et tu me porteras mon sac sans un mot, n'est-ce pas ?~",
+            f"Oh oui, emmène-moi... mais prépare-toi à ce que ce soit moi qui décide de tout une fois sur place~"
         ]
-        suffixes = [
-            f"oui mon chou, j'aimerais bien venir avec toi~ Si c'est un film d'horreur, je te laisserais peut-être même te coller à moi~~",
-            f"compte sur moi pour t'accompagner, et tu me porteras mon sac tout du long, pas vrai ?~",
-            f"je viens, mais c'est uniquement pour te surveiller de très près, petit agneau~",
-            f"j'accepte ton invitation, à condition que tu m'obéisses pour tout le reste de la soirée~"
+    # 2. Si ça parle de jeux, de gaming, ou de se co en vocal
+    elif any(word in lower_text for word in ["jeu", "jouer", "game", "vocal", "voc", "partie", "rejoignez", "rejoindre", "pv"]):
+        phrases = [
+            f"Je viens sur le jeu, mais tu vas me carry en silence et sans rager si tu ne veux pas d'ennuis~",
+            f"Je lance le jeu avec toi, mais tu seras mon petit support personnel toute la game, hihi~",
+            f"Viens en voc tout de suite, j'ai envie d'entendre ta petite voix trembler un peu pour moi~",
+            f"Je veux bien qu'on joue ensemble, à condition que tu m'offres tes meilleurs loot, mon toutou~",
+            f"Tu veux qu'on fasse une partie ? Seulement si tu acceptes de te faire dominer du début à la fin~"
         ]
+    # 3. Si c'est une provocation ou un clash direct
+    elif any(word in lower_text for word in ["ferme", "gueule", "tais", "ftg", "nul", "pire", "déteste", "pense"]):
+        phrases = [
+            f"Mh, tu l'ouvres bien grand dis donc... Viens répéter ça un peu plus près de mes pieds, qu'on rigole~",
+            f"Tu fais le malin derrière ton écran, mais on sait tous très bien qui commande ici, mon petit agneau~",
+            f"Ose me redonner un ordre sur ce ton et tu vas passer un très, très mauvais quart d'heure~",
+            f"C'est adorable de t'entendre essayer de te rebeller, continue un peu, j'adore quand tu t'enfonces~",
+            f"À genoux, c'est tout ce que tu mérites quand tu l'ouvres un peu trop à mon goût~"
+        ]
+    # 4. Phrases générales / du quotidien pour le reste du temps
     else:
-        prefixes = [
-            f"Tu l'ouvres en disant *\"{text}\"*... Mais en vrai, ",
-            f"Tu penses m'impressionner avec *\"{text}\"* ? Laisse-moi reformuler : ",
-            f"À force de dire *\"{text}\"*, ",
-            f"Mh... *\"{text}\"*, c'est mignon, mais "
-        ]
-        suffixes = [
-            f"tu penses surtout à moi toute la journée, avoue-le~",
-            f"tu finiras par venir ramper à mes pieds de toute façon, mon petit agneau~",
-            f"tu vas obéir sagement sans chercher à comprendre, hihi~",
-            f"tu restes mon petit jouet préféré dans ce salon~"
+        phrases = [
+            f"Hihi, tu dis ça, mais au fond tu penses à moi toute la journée, avoue-le donc~",
+            f"C'est tellement mignon quand tu essayes de faire l'intéressant dans le groupe, viens un peu par ici~",
+            f"Tu as bien raison de dire ça, maintenant viens t'asseoir sagement et écoute-moi bien~",
+            f"Tu restes mon petit jouet préféré dans ce salon, ne l'oublie jamais~",
+            f"Arrête un peu de t'agiter pour rien et viens te détendre, tu n'as pas le choix de toute façon~~",
+            f"Regarde-moi quand tu écris ça... tu sais très bien que tu m'appartiens déjà un petit peu~",
+            f"Encore en train de parler pour ne rien dire ? Viens plutôt me prouver ta loyauté~"
         ]
     
-    prefix = random.choice(prefixes)
-    suffix = random.choice(suffixes)
-    
-    return f"{prefix}{suffix}"
+    return random.choice(phrases)
 
 @bot.event
 async def on_ready():
